@@ -20,17 +20,17 @@ input,select{width:100%;padding:6px;border-radius:5px;border:1px solid #444;back
 .h{display:none}
 .dir{display:flex;gap:8px;margin-bottom:8px}
 .dir button{flex:1;padding:8px;border:2px solid #444;border-radius:5px;background:#222;color:#fff;font-weight:bold;cursor:pointer;font-size:14px}
-.db{background:rgba(0,150,50,.3)!important;border-color:#0f0!important;color:#0f0!important}
-.ds{background:rgba(150,30,30,.3)!important;border-color:#f00!important;color:#f00!important}
+.dBuy{background:rgba(0,150,50,.3)!important;border-color:#0f0!important;color:#0f0!important}
+.dSell{background:rgba(150,30,30,.3)!important;border-color:#f00!important;color:#f00!important}
 </style>
 </head>
 <body>
 <div class="c">
-<h1>⚡ Jarius Risk Calc</h1>
+<h1>⚡️ Jarius Risk Calc</h1>
 <div class="box">
 <div class="dir">
-<button class="db" id="b1" onclick="sd(1)">📈 BUY</button>
-<button class="ds" id="b2" onclick="sd(2)">📉 SELL</button>
+<button class="dBuy" id="b1" onclick="sd(1)">📈 BUY</button>
+<button class="dSell" id="b2" onclick="sd(2)">📉 SELL</button>
 </div>
 <label>Balance ($)</label><input type="number" id="n1" value="295">
 <label>Risk (%)</label><input type="number" id="n2" value="3">
@@ -53,37 +53,11 @@ input,select{width:100%;padding:6px;border-radius:5px;border:1px solid #444;back
 </div>
 <script>
 let dir=1;
-function sd(n){dir=n;document.getElementById('b1').className=n==1?'db':'ds';document.getElementById('b2').className=n==2?'db':'ds';}
-function calc(){
-var b=parseFloat(document.getElementById('n1').value)||0;
-var r=parseFloat(document.getElementById('n2').value)||3;
-var e=parseFloat(document.getElementById('n4').value)||0;
-var s=parseFloat(document.getElementById('n5').value)||0;
-var t=parseFloat(document.getElementById('n6').value)||0;
-var p=document.getElementById('n3').value;
-if(!b||!e||!s){alert('Isi Balance, Entry, SL');return}
-var ok=(dir==1&&e>s)||(dir==2&&e<s);
-if(!ok){alert(dir==1?'BUY: Entry > SL':'SELL: Entry < SL');return}
-var ra=b*(r/100),dist=Math.abs(e-s),pts=p=='gold'?dist:dist*10000;
-var lot=(ra/(pts*(p=='gold'?0.1:1))).toFixed(2);
-if(lot<0.01)lot=0.01;if(lot>0.1)lot=0.1;
-var rr='-';if(t){rr=(Math.abs(t-e)/dist).toFixed(2)+':1'}
-document.getElementById('o1').textContent=dir==1?'📈 BUY':'📉 SELL';
-document.getElementById('o2').textContent='$'+ra.toFixed(2);
-document.getElementById('o3').textContent=pts.toFixed(1)+(p=='gold'?' pts':' pips');
-document.getElementById('o4').textContent=lot;
-document.getElementById('o5').textContent=rr;
-document.getElementById('res').classList.remove('h');
-var w=[],m=document.getElementById('msg');
-if(r>3)w.push('⚠️ Risk >3%');
-if(p=='gold'&&dist<5)w.push('⚠️ SL terlalu ketat');
-if(rr!='-'&&parseFloat(rr)<1.5)w.push('⚠️ R:R < 1.5');
-if(rr!='-'&&parseFloat(rr)>=2)w.push('✅ R:R bagus');
-m.innerHTML=w.length>0?w.join('<br>'):'✅ Setup aman';
-m.className='w '+(w.length==0||w[0][0]=='✅'?'ok':'');
-m.classList.remove('h');
+function sd(n){
+  dir=n;
+  document.getElementById('b1').className=n==1?'dBuy':'dSell';
+  document.getElementById('b2').className=n==2?'dBuy':'dSell';
 }
-sd(1);
-</script>
-</body>
-</html>
+function calc(){
+  var b=parseFloat(document.getElementById('n1').val
+
