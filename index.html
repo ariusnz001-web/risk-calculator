@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jarius Risk Calc</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui;background:#1a1a2e;color:#fff;padding:15px}
+.container{max-width:400px;margin:0 auto}
+h1{color:#ffd700;text-align:center;font-size:1.3rem;margin-bottom:20px}
+.card{background:rgba(255,255,255,.05);border-radius:12px;padding:15px;margin-bottom:12px}
+label{display:block;font-size:.8rem;color:#aaa;margin-bottom:4px}
+input,select{width:100%;padding:10px;border-radius:8px;border:1px solid #444;background:#222;color:#fff;margin-bottom:10px}
+button{width:100%;padding:12px;border:none;border-radius:8px;background:#ffd700;color:#1a1a2e;font-weight:bold;font-size:1rem;cursor:pointer}
+.result{background:rgba(0,0,0,.3);border-radius:8px;padding:12px;margin-top:12px;border-left:3px solid #ffd700}
+.row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #333}
+.val{color:#ffd700;font-weight:bold}
+.warn{color:#ff9999;font-size:.85rem;margin-top:10px;padding:10px;background:rgba(255,0,0,.1);border-radius:6px}
+.ok{color:#99ff99;background:rgba(0,255,0,.1)}
+.hidden{display:none}
+.f{text-align:center;margin-top:20px;font-size:.75rem;color:#888}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>⚡️ Jarius Risk Calc</h1>
+<div class="card">
+<label>Balance (USD)</label><input type="number" id="b" value="295">
+<label>Risk %</label><input type="number" id="r" value="3">
+<label>Pair</label><select id="p"><option value="gold">XAUUSD</option><option value="fx">Forex</option></select>
+<label>Entry</label><input type="number" id="e" step="0.01">
+<label>Stop Loss</label><input type="number" id="s" step="0.01">
+<label>Take Profit</label><input type="number" id="t" step="0.01">
+<button onclick="calc()">🔥 HITUNG</button>
+<div id="res" class="hidden">
+<div class="result">
+<div class="row"><span>Risk Amount</span><span class="val" id="ra">$0</span></div>
+<div class="row"><span>SL Distance</span><span class="val" id="sd">0</span></div>
+<div class="row"><span>Lot Size</span><span class="val" id="rl">0</span></div>
+<div class="row"><span>R:R</span><span class="val" id="rr">-</span></div>
+</div>
+<div id="msg" class="warn hidden"></div>
+</div>
+</div>
+<div class="f"><b>RULES:</b> Max 2 trade/hari | Risk max 3% | SL wajib</div>
+</div>
+<script>
+function calc(){
+var b=parseFloat(document.getElementById('b').value)||0;
+var r=parseFloat(document.getElementById('r').value)||3;
+var e=parseFloat(document.getElementById('e').value)||0;
+var s=parseFloat(document.getElementById('s').value)||0;
+var t=parseFloat(document.getElementById('t').value)||0;
+var p=document.getElementById('p').value;
+if(!b||!e||!s){alert('Isi Balance, Entry, SL!');return}
+var ra=b*(r/100),dist=Math.abs(e-s),points=p=='gold'?dist:dist*10000;
+var pipVal=p=='gold'?0.1:1,lot=(ra/(points*pipVal)).toFixed(2);
+if(lot<0.01)lot=0.01;if(lot>0.1)lot=0.1;
+var rr='-';if(t){rr=(Math.abs(t-e)/dist).toFixed(2)+':1'}
+document.getElementById('ra').textContent='$'+ra.toFixed(2);
+document.getElementById('sd').textContent=points.toFixed(1)+(p=='gold'?' pts':' pips');
+document.getElementById('rl').textContent=lot;
+document.getElementById('rr').textContent=rr;
+document.getElementById('res').classList.remove('hidden');
+var w=[],msg=document.
