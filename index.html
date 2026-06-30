@@ -5,50 +5,85 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jarius Risk Calc</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:system-ui;background:#1a1a2e;color:#fff;padding:15px;min-height:100vh}
-.container{max-width:400px;margin:0 auto}
-h1{color:#ffd700;text-align:center;font-size:1.3rem;margin-bottom:20px}
-.card{background:rgba(255,255,255,.05);border-radius:12px;padding:15px;margin-bottom:12px;border:1px solid rgba(255,255,255,.1)}
-label{display:block;font-size:.8rem;color:#aaa;margin-bottom:4px}
-input,select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.3);color:#fff;font-size:1rem;margin-bottom:10px}
-button{width:100%;padding:12px;border:none;border-radius:8px;background:linear-gradient(135deg,#ffd700,#ffb700);color:#1a1a2e;font-weight:bold;font-size:1rem;cursor:pointer}
-.result{background:rgba(0,0,0,.3);border-radius:8px;padding:12px;margin-top:12px;border-left:3px solid #ffd700}
-.row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05)}
-.val{color:#ffd700;font-weight:bold}
-.warn{color:#ff9999;font-size:.85rem;margin-top:10px;padding:10px;background:rgba(255,100,100,.1);border-radius:6px;border-left:3px solid #ff6464}
-.ok{color:#99ff99;background:rgba(100,255,100,.1);border-left-color:#64ff64}
-.hidden{display:none}
-.f{text-align:center;margin-top:20px;font-size:.75rem;color:#888}
-.f strong{color:#ffd700}
-.direction-toggle{display:flex;gap:10px;margin-bottom:15px}
-.dir-btn{flex:1;padding:12px;border:2px solid rgba(255,255,255,.2);border-radius:10px;background:rgba(0,0,0,.2);color:#fff;font-weight:bold;cursor:pointer;text-align:center;transition:all .3s}
-.dir-btn.active.buy{background:rgba(0,200,100,.3);border-color:#00c864;color:#00ff88}
-.dir-btn.active.sell{background:rgba(200,50,50,.3);border-color:#c83232;color:#ff6464}
-.dir-label{font-size:1.2rem}
-.dir-result{font-size:1.5rem;text-align:center;margin-bottom:10px}
-.dir-result.buy{color:#00ff88}
-.dir-result.sell{color:#ff6464}
+body{font-family:system-ui;background:#1a1a2e;color:#fff;padding:10px;margin:0}
+.c{max-width:360px;margin:0 auto}
+h1{color:#ffd700;text-align:center;font-size:18px;margin:0 0 10px}
+.box{background:rgba(255,255,255,.08);border-radius:8px;padding:10px;margin-bottom:8px}
+label{font-size:12px;color:#aaa;display:block;margin:4px 0 2px}
+input,select{width:100%;padding:6px;border-radius:5px;border:1px solid #444;background:#222;color:#fff;font-size:14px;box-sizing:border-box}
+.btn{width:100%;padding:10px;border:none;border-radius:5px;background:#ffd700;color:#000;font-weight:bold;font-size:16px;cursor:pointer;margin-top:8px}
+.res{background:rgba(0,0,0,.3);border-radius:5px;padding:8px;margin-top:8px;border-left:3px solid #ffd700;font-size:13px}
+.r{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #333}
+.v{color:#ffd700;font-weight:bold}
+.w{color:#f99;font-size:12px;margin-top:6px;padding:6px;background:rgba(255,0,0,.1);border-radius:4px;border-left:3px solid #f00}
+.ok{color:#9f9;background:rgba(0,255,0,.1);border-left-color:#0f0}
+.h{display:none}
+.dir{display:flex;gap:8px;margin-bottom:8px}
+.dir button{flex:1;padding:8px;border:2px solid #444;border-radius:5px;background:#222;color:#fff;font-weight:bold;cursor:pointer;font-size:14px}
+.db{background:rgba(0,150,50,.3)!important;border-color:#0f0!important;color:#0f0!important}
+.ds{background:rgba(150,30,30,.3)!important;border-color:#f00!important;color:#f00!important}
 </style>
 </head>
 <body>
-<div class="container">
-<h1>⚡️ Jarius Risk Calc</h1>
-<div class="card">
-<label style="color:#ffd700;margin-bottom:10px">📌 ARAH TRADE</label>
-<div class="direction-toggle">
-<button class="dir-btn buy" id="btnBuy" onclick="setDir('buy')">
-<div class="dir-label">📈 BUY</div>
-<small>Entry > SL</small>
-</button>
-<button class="dir-btn sell" id="btnSell" onclick="setDir('sell')">
-<div class="dir-label">📉 SELL</div>
-<small>Entry < SL</small>
-</button>
+<div class="c">
+<h1>⚡ Jarius Risk Calc</h1>
+<div class="box">
+<div class="dir">
+<button class="db" id="b1" onclick="sd(1)">📈 BUY</button>
+<button class="ds" id="b2" onclick="sd(2)">📉 SELL</button>
 </div>
-<hr style="border:0;border-top:1px solid rgba(255,255,255,.1);margin:15px 0">
-<label>Balance (USD)</label><input type="number" id="b" value="295">
-<label>Risk %</label><input type="number" id="r" value="3">
-<label>Pair</label><select id="p"><option value="gold">XAUUSD</option><option value="fx">Forex</option></select>
-<label>Entry Price</label><input type="number" id="e" step="0.01">
-<label>Stop Loss</label><input type="number" id="s" step="0.01">
+<label>Balance ($)</label><input type="number" id="n1" value="295">
+<label>Risk (%)</label><input type="number" id="n2" value="3">
+<label>Pair</label><select id="n3"><option value="gold">XAUUSD</option><option value="fx">Forex</option></select>
+<label>Entry</label><input type="number" id="n4" step="0.01">
+<label>Stop Loss</label><input type="number" id="n5" step="0.01">
+<label>Take Profit</label><input type="number" id="n6" step="0.01">
+<button class="btn" onclick="calc()">🔥 HITUNG</button>
+<div id="res" class="h">
+<div class="res">
+<div class="r"><span>Arah</span><span class="v" id="o1">-</span></div>
+<div class="r"><span>Risk $</span><span class="v" id="o2">$0</span></div>
+<div class="r"><span>SL Dist</span><span class="v" id="o3">0</span></div>
+<div class="r"><span>Lot</span><span class="v" id="o4">0</span></div>
+<div class="r"><span>R:R</span><span class="v" id="o5">-</span></div>
+</div>
+<div id="msg" class="w h"></div>
+</div>
+</div>
+</div>
+<script>
+let dir=1;
+function sd(n){dir=n;document.getElementById('b1').className=n==1?'db':'ds';document.getElementById('b2').className=n==2?'db':'ds';}
+function calc(){
+var b=parseFloat(document.getElementById('n1').value)||0;
+var r=parseFloat(document.getElementById('n2').value)||3;
+var e=parseFloat(document.getElementById('n4').value)||0;
+var s=parseFloat(document.getElementById('n5').value)||0;
+var t=parseFloat(document.getElementById('n6').value)||0;
+var p=document.getElementById('n3').value;
+if(!b||!e||!s){alert('Isi Balance, Entry, SL');return}
+var ok=(dir==1&&e>s)||(dir==2&&e<s);
+if(!ok){alert(dir==1?'BUY: Entry > SL':'SELL: Entry < SL');return}
+var ra=b*(r/100),dist=Math.abs(e-s),pts=p=='gold'?dist:dist*10000;
+var lot=(ra/(pts*(p=='gold'?0.1:1))).toFixed(2);
+if(lot<0.01)lot=0.01;if(lot>0.1)lot=0.1;
+var rr='-';if(t){rr=(Math.abs(t-e)/dist).toFixed(2)+':1'}
+document.getElementById('o1').textContent=dir==1?'📈 BUY':'📉 SELL';
+document.getElementById('o2').textContent='$'+ra.toFixed(2);
+document.getElementById('o3').textContent=pts.toFixed(1)+(p=='gold'?' pts':' pips');
+document.getElementById('o4').textContent=lot;
+document.getElementById('o5').textContent=rr;
+document.getElementById('res').classList.remove('h');
+var w=[],m=document.getElementById('msg');
+if(r>3)w.push('⚠️ Risk >3%');
+if(p=='gold'&&dist<5)w.push('⚠️ SL terlalu ketat');
+if(rr!='-'&&parseFloat(rr)<1.5)w.push('⚠️ R:R < 1.5');
+if(rr!='-'&&parseFloat(rr)>=2)w.push('✅ R:R bagus');
+m.innerHTML=w.length>0?w.join('<br>'):'✅ Setup aman';
+m.className='w '+(w.length==0||w[0][0]=='✅'?'ok':'');
+m.classList.remove('h');
+}
+sd(1);
+</script>
+</body>
+</html>
